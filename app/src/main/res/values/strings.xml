@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Authenti6</string>
 
-    <string name="status_initial">Waiting for WiFi connection...</string>
+    <string name="status_initial">Analyzing...</string>
     <string name="status_connecting">Connecting...</string>
     <string name="status_ok">Connected</string>
     <string name="status_error">Failed</string>

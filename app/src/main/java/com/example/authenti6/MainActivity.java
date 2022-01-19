@@ -4,23 +4,17 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.NetworkRequest;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.content.Context;
-import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    Monitor monitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +22,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
+        TextView textView = (TextView)findViewById(R.id.textView);
+        textView.setText(getString(R.string.status_initial));
+
+        monitor = new Monitor(new Analyzer(textView));
+
         this.enableWifiMonitor();
     }
-
 
     private void enableWifiMonitor() {
         NetworkRequest request = new NetworkRequest.Builder()
@@ -38,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+
+        if (!connectivityManager.getActiveNetworkInfo().isConnected())
+            monitor.disconnectedFromWifi();
+
         connectivityManager.registerNetworkCallback(request, new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(Network network) {
@@ -45,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         TextView textView = (TextView)findViewById(R.id.textView);
-                        textView.setText(getString(R.string.status_connecting));
+                        textView.setText(getString(R.string.status_ok));
+
+                        monitor.connectedToWifi();
                     }
                 });
             }
@@ -56,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         TextView textView = (TextView)findViewById(R.id.textView);
-                        textView.setText(getString(R.string.status_initial));
+                        textView.setText(getString(R.string.status_error));
+
+                        monitor.disconnectedFromWifi();
                     }
                 });
             }
