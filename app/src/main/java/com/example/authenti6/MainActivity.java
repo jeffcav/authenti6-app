@@ -10,11 +10,23 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
     Monitor monitor;
+    Executor executor;
+    Analyzer analyzer;
+    Planner planner;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +37,33 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(getString(R.string.status_initial));
 
-        monitor = new Monitor(new Analyzer(textView));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        executor = new Executor(this, requestQueue, textView);
+        planner = new Planner(executor);
+        analyzer = new Analyzer(planner, textView);
+        monitor = new Monitor(analyzer);
 
+        this.enableConnectedStateMonitor(textView);
         this.enableWifiMonitor();
+    }
+
+    private void enableConnectedStateMonitor(TextView textView) {
+        textView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals(getString(R.string.status_connected)))
+                    monitor.waitingForAuthenticationStatus();
+            }
+        });
     }
 
     private void enableWifiMonitor() {
@@ -46,9 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textView = (TextView)findViewById(R.id.textView);
-                        textView.setText(getString(R.string.status_ok));
-
                         monitor.connectedToWifi();
                     }
                 });
@@ -59,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textView = (TextView)findViewById(R.id.textView);
-                        textView.setText(getString(R.string.status_error));
-
                         monitor.disconnectedFromWifi();
                     }
                 });

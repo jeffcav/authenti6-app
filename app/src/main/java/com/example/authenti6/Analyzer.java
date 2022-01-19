@@ -22,7 +22,7 @@ public class Analyzer {
 
     public static final int ACTION_CONNECT_TO_WIFI = 1;
     public static final int ACTION_DISCONNECT_FROM_WIFI = 2;
-    public static final int ACTION_AUTH_STATUS_REQUESTED = 3;
+    public static final int ACTION_REQUEST_AUTH_STATUS = 3;
     public static final int ACTION_STILL_AUTHENTICATING = 4;
     public static final int ACTION_AUTHENTICATION_FAILED = 5;
     public static final int ACTION_AUTHENTICATION_OK= 6;
@@ -30,13 +30,15 @@ public class Analyzer {
     public static final int ACTION_SERVICES_FAIL = 8;
     public static final int ACTION_SERVICES_OK = 9;
 
-    public Analyzer(TextView textView) {
+    public Analyzer(Planner planner, TextView textView) {
+        this.textView = textView;
+        this.planner = planner;
+
         state = Analyzer.STATE_UNKNOWN;
         previous_state = Analyzer.STATE_UNKNOWN;
 
-        this.textView = textView;
-
-        planner = new Planner(textView);
+        // Do whatever needs to be done when state is unknown
+        planner.plan(previous_state, state);
     }
 
     public void transition(int action) {
@@ -121,7 +123,7 @@ public class Analyzer {
                 previous_state = state;
                 state = STATE_DISCONNECTED;
                 break;
-            case ACTION_AUTH_STATUS_REQUESTED:
+            case ACTION_REQUEST_AUTH_STATUS:
                 previous_state = state;
                 state = STATE_WAITING_FOR_AUTH;
                 break;

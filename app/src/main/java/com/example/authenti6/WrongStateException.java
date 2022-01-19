@@ -9,7 +9,7 @@ public class WrongStateException extends RuntimeException {
     }
 
     public String getMessage() {
-        return "Invalid transition from " + state + " with action " + action;
+        return "Error: transition from state " + state + " with action " + action;
     }
 
 }

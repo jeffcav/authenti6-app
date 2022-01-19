@@ -1,23 +1,44 @@
 package com.example.authenti6;
 
+import android.util.Log;
 import android.widget.TextView;
+import com.android.volley.RequestQueue;
 
 public class Planner {
 
-    private final TextView textView;
+    private static final String TAG = "Planner";
     private final Executor executor;
 
-    public Planner(TextView textView) {
-        this.textView = textView;
-        executor = new Executor();
+    public Planner(Executor executor) {
+        this.executor = executor;
     }
 
     public void plan(int previous_state, int current_state) {
-        if (current_state == Analyzer.STATE_CONNECTED)
-            executor.printNetworkState(textView, true);
-        else if (current_state == Analyzer.STATE_DISCONNECTED)
-            executor.printNetworkState(textView, false);
-        else if (current_state == Analyzer.STATE_UNKNOWN)
-            executor.printInitialState(textView);
+        Log.i(TAG, "Current state " + current_state);
+
+        if (current_state == Analyzer.STATE_UNKNOWN) {
+            executor.printInitialState();
+            return;
+        }
+
+        if (current_state == Analyzer.STATE_CONNECTED) {
+            executor.printNetworkState(true);
+            return;
+        }
+
+        if (current_state == Analyzer.STATE_DISCONNECTED) {
+            executor.printNetworkState(false);
+            return;
+        }
+
+        if (current_state == Analyzer.STATE_UNKNOWN) {
+            executor.printInitialState();
+            return;
+        }
+
+        if (current_state == Analyzer.STATE_WAITING_FOR_AUTH) {
+            executor.requestAuthStatus();
+            return;
+        }
     }
 }

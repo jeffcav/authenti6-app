@@ -19,4 +19,8 @@ public class Monitor {
     public void disconnectedFromWifi() {
         analyzer.transition(Analyzer.ACTION_DISCONNECT_FROM_WIFI);
     }
+
+    public void waitingForAuthenticationStatus() {
+        analyzer.transition(Analyzer.ACTION_REQUEST_AUTH_STATUS);
+    }
 }
