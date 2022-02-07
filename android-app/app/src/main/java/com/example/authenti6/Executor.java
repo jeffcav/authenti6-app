@@ -34,18 +34,21 @@ public class Executor {
     }
 
     public void requestAuthStatus() {
-        String url ="https://www.google.com";
+        String url ="http://192.168.0.100:5050/auth-status";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    textView.setText("Authenticated"); //Response is: "+ response.substring(0,500));
+                    AuthStatus authStatus = ServerProxy.getAuthStatus(response);
+                    if (authStatus.getStatus().equals(AuthStatus.AUTH_OK))
+                        textView.setText("Authentication OK!");
+                    else
+                        textView.setText("Authentication FAILED!");
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    textView.setText("Authentication failed!");
+                    textView.setText("Authentication ERROR!");
                 }
             }
         );
