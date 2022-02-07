@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Play song{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <br/>
+    {% if g.is_playing %}
+      Now playing: {{ g.current_song }}
+    {% else %}
+        Error, please check player device and try again
+    {% endif %}
+{% endblock %}
