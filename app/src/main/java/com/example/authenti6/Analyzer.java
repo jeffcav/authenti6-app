@@ -108,9 +108,9 @@ public class Analyzer {
 
     private void process_state_disconnected(int action) throws WrongStateException {
         switch (action) {
-            case ACTION_CONNECT_TO_WIFI:
+            case ACTION_DISCONNECT_FROM_WIFI:
                 previous_state = state;
-                state = STATE_CONNECTED;
+                state = STATE_DISCONNECTED;
                 break;
             default:
                 throw new WrongStateException(state, action);

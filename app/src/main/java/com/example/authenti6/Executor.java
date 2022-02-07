@@ -40,12 +40,12 @@ public class Executor {
                 @Override
                 public void onResponse(String response) {
                     // Display the first 500 characters of the response string.
-                    textView.setText("Response is: "+ response.substring(0,500));
+                    textView.setText("Authenticated"); //Response is: "+ response.substring(0,500));
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    textView.setText("That didn't work!");
+                    textView.setText("Authentication failed!");
                 }
             }
         );
