@@ -1,6 +1,6 @@
 import json
 import spotipy
-from flask import Flask, url_for, request, render_template, flash, g
+from flask import Flask, request, render_template, flash, g
 from spotipy.oauth2 import SpotifyOAuth
 
 app = Flask(__name__)
@@ -13,9 +13,6 @@ songs_available = {
     'spotify:track:0vT797IpZpF5o1XLCnWCUL': "Ferrugem - É Natural",
     'spotify:track:3tc8Z4lGzOIwmIVftsxO6o': "Marilia Mendonça - Graveto"
 }
-
-HTML_HEAD = "<html><body style=\"background-color:powderblue; font-family:verdana;\"><h1>HOME VICTROLA</h1><br/>"
-HTML_TAIL = "</body></html>\n"
 
 def get_credentials(services_file="credentials.json"):
     with open(services_file, "r") as read_file:
