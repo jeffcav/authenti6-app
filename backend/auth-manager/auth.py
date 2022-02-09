@@ -18,8 +18,17 @@ EVENTS_FIFO = '/tmp/events-pipe'
 REQUESTS_FIFO = '/tmp/requests-pipe'
 
 def create_pipes():
-    os.unlink(EVENTS_FIFO)
-    os.unlink(REQUESTS_FIFO)
+    print("Creating pipes for communication with the authentication daemon")
+
+    try:
+        os.unlink(EVENTS_FIFO)
+    except Exception:
+        pass
+    
+    try:
+        os.unlink(REQUESTS_FIFO)
+    except Exception:
+        pass
 
     try:
         os.mkfifo(EVENTS_FIFO)
