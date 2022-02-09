@@ -30,7 +30,10 @@ public class Planner {
                 break;
 
             case Analyzer.STATE_WAITING_FOR_AUTH:
-                executor.requestAuthStatus();
+                int delay = 0;
+                if (previous_state == Analyzer.STATE_WAITING_FOR_AUTH)
+                    delay = 3000;
+                executor.requestAuthStatus(delay);
                 break;
 
             case Analyzer.STATE_AUTH_FAILED:

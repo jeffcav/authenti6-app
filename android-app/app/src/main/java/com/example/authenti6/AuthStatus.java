@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 public class AuthStatus {
     public static final String AUTH_OK = "OK";
     public static final String AUTH_FAIL = "FAIL";
-    public static final String AUTH_IN_PROGRESS = "IN_PROGRESS";
     public static final String AUTH_ERROR = "ERROR";
+    public static final String AUTH_IN_PROGRESS = "IN_PROGRESS";
+    public static final String AUTH_UNKNOWN_DEVICE = "UNKNOWN_DEVICE";
 
     private String status;
 

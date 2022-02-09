@@ -22,6 +22,7 @@ public class Monitor {
                 analyzer.transition(Analyzer.ACTION_AUTHENTICATION_OK);
                 break;
             case AuthStatus.AUTH_IN_PROGRESS:
+            case AuthStatus.AUTH_UNKNOWN_DEVICE:
                 analyzer.transition(Analyzer.ACTION_REQUEST_AUTH_STATUS);
                 break;
             default:

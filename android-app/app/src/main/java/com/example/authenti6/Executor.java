@@ -1,6 +1,7 @@
 package com.example.authenti6;
 
 import android.content.Context;
+import android.os.Handler;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -55,7 +56,7 @@ public class Executor {
         textView.setText(context.getString(R.string.status_initial));
     }
 
-    public void requestAuthStatus() {
+    public void requestAuthStatus(int delay) {
         String authStatusProvider = context.getString(R.string.auth_status_provider);
         HttpsTrustManager.allowAllSSL();
 
@@ -63,7 +64,17 @@ public class Executor {
                 Request.Method.GET, authStatusProvider,
                 authStatusResponseListener, authStatusErrorListener);
 
-        requestQueue.add(stringRequest);
+        if (delay > 0) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    requestQueue.add(stringRequest);
+                }
+            }, delay);
+        } else {
+            requestQueue.add(stringRequest);
+        }
     }
 
     public void printAuthenticationFailed() {
