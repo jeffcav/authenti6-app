@@ -32,7 +32,7 @@ def auth_status():
     try:
         auth_status = database.get(client_mac)
     except TypeError:
-        return str({"auth-status": "ERROR"})
+        return str({"auth-status": "UNKNOWN_DEVICE"})
 
     return auth_status
 
