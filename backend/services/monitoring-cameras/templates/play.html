@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ camera_name }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <br/>
+    <iframe id="frmPlayer" 
+        style="border:0;overflow:hidden;width:480px;height:345px;z-index:2;" 
+        scrolling="no" src="{{ camera_id }}"></iframe>
+{% endblock %}

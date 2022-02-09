@@ -58,7 +58,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.ViewHo
         Button button = holder.goButton;
         button.setText("Go");
         button.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.0.100:5051"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(service.getUrl()));
             context.startActivity(browserIntent);
         });
 

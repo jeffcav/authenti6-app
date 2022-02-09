@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Cameras Available{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% for camera_id, camera_name in cameras.items() %}
+        <li><a href="{{ url_for('play') }}?camera={{camera_id}}">{{ camera_name }}</a>
+    {% endfor %}
+</ul>
+{% endblock %}

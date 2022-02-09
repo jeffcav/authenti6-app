@@ -1,12 +1,16 @@
 {
     "services": [
         {
-            "name":"ambient-sound",
-            "url": "192.168.0.100:5051"
+            "name":"Ambient sound",
+            "url": "http://192.168.0.100:5051"
         },
         {
-            "name":"ambient-light",
-            "url": "192.168.0.100:5052"
+            "name":"Monitoring system",
+            "url": "http://192.168.0.100:5052"
+        },
+        {
+            "name":"Ambient light",
+            "url": "http://192.168.0.100:5053"
         }
     ]
 }

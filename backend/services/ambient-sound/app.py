@@ -55,6 +55,7 @@ def index():
 @app.route('/play', methods=['GET'])
 def play():
     song_id = request.args.get('song')
+    song_name = songs_available[song_id]
     
     error = play_song(song_id)
     if error is None:
@@ -63,11 +64,4 @@ def play():
         flash(error)
         g.is_playing = False
 
-    current_song = get_currently_playing_song()
-    if current_song is None:
-        flash("Could not determine currently playing song")
-        g.current_song = None
-    else:
-        g.current_song = current_song
-
-    return render_template('play.html')
+    return render_template('play.html', song_name = song_name)

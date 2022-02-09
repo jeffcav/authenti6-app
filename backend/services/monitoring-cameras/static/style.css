@@ -1,13 +1,13 @@
 html { font-family: sans-serif; background: #eee; padding: 1rem; }
-body { max-width: 380px; margin: 0 auto; background: white; }
+body { max-width: 500px; margin: 0 auto; background: #eee; }
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
 a { color: #377ba8; }
 hr { border: none; border-top: 1px solid lightgray; }
-nav { background: #377ba8; display: flex; align-items: center; padding: 0 0.5rem; }
-nav h1 { flex: auto; margin: 0; color: white;}
-nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; color: white; }
+nav { background: darkmagenta; display: flex; align-items: center; padding: 0 0.5rem; }
+nav h1 { flex: auto; margin: 0; color: white}
+nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; color: white}
 nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
-nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; color: white; }
+nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; color: white}
 .content { padding: 0 1rem 1rem; }
 .content > header { border-bottom: 1px solid lightgray; display: flex; align-items: flex-end; }
 .content > header h1 { flex: auto; margin: 1rem 0 0.25rem 0; }
