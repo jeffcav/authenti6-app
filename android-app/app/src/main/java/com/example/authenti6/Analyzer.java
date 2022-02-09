@@ -152,13 +152,7 @@ public class Analyzer {
     }
 
     private int processStateAuthFailed(int action) throws WrongStateException  {
-        switch (action) {
-            case STATE_AUTH_FAILED:
-                return STATE_AUTH_FAILED; // final state
-
-            default:
-                throw new WrongStateException(state, action);
-        }
+        return STATE_AUTH_FAILED; // final state
     }
 
     private int processStateAuthenticated(int action) throws WrongStateException {
@@ -177,16 +171,25 @@ public class Analyzer {
         }
     }
 
-    private int processStateWaitingForServices(int action) {
-        return 0;
+    private int processStateWaitingForServices(int action) throws WrongStateException {
+        switch (action) {
+            case ACTION_SERVICES_OK:
+                return STATE_DISPLAYING_SERVICES;
+
+            case ACTION_SERVICES_FAIL:
+                return STATE_NO_SERVICE_AVAILABLE;
+
+            default:
+                throw new WrongStateException(state, action);
+        }
     }
 
     private int processStateNoServiceAvailable(int action) {
-        return 0;
+        return STATE_NO_SERVICE_AVAILABLE; // final state
     }
 
     private int processStateDisplayingServices(int action) {
-        return 0;
+        return STATE_NO_SERVICE_AVAILABLE; // final state
     }
 
 }

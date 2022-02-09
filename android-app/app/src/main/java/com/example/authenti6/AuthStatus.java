@@ -1,5 +1,8 @@
 package com.example.authenti6;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 
 public class AuthStatus {
@@ -8,25 +11,18 @@ public class AuthStatus {
     public static final String AUTH_IN_PROGRESS = "IN_PROGRESS";
     public static final String AUTH_ERROR = "ERROR";
 
+    private String status;
 
-    String status;
-    LocalDateTime expiryDate;
-
-    public AuthStatus setStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    public AuthStatus setExpiryDate(LocalDateTime date) {
-        this.expiryDate = date;
-        return this;
+    public AuthStatus(String authStatusJson) {
+        try {
+            JSONObject json = new JSONObject(authStatusJson);
+            status = json.getString("auth-status");
+        } catch (JSONException e) {
+            status = AUTH_ERROR;
+        }
     }
 
     public String getStatus() {
         return status;
-    }
-
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
     }
 }

@@ -11,4 +11,7 @@
 
     <string name="status_auth_failed">Authentication failed</string>
     <string name="status_requesting_services">Requesting services</string>
+
+    <string name="status_services_ok">Services available</string>
+    <string name="status_services_failed">No services available</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth_status_provider">http://192.168.0.100:5050/auth-status</string>
-    <string name="services_provider">http://192.168.0.100:5051/services</string>
+    <string name="auth_status_provider">https://192.168.0.100:5050/auth-status</string>
+    <string name="services_provider">https://192.168.0.100:5050</string>
 </resources>

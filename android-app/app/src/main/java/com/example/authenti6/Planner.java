@@ -40,6 +40,14 @@ public class Planner {
             case Analyzer.STATE_AUTHENTICATED:
                 executor.requestServices();
                 break;
+
+            case Analyzer.STATE_DISPLAYING_SERVICES:
+                executor.printAvailableServices();
+                break;
+
+            case Analyzer.STATE_NO_SERVICE_AVAILABLE:
+                executor.printServicesFailed();
+                break;
         }
     }
 }
