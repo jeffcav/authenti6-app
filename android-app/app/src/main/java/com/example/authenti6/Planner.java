@@ -16,29 +16,30 @@ public class Planner {
     public void plan(int previous_state, int current_state) {
         Log.i(TAG, "Current state " + current_state);
 
-        if (current_state == Analyzer.STATE_UNKNOWN) {
-            executor.printInitialState();
-            return;
-        }
+        switch (current_state) {
+            case Analyzer.STATE_UNKNOWN:
+                executor.printInitialState();
+                break;
 
-        if (current_state == Analyzer.STATE_CONNECTED) {
-            executor.printNetworkState(true);
-            return;
-        }
+            case Analyzer.STATE_CONNECTED:
+                executor.printNetworkState(true);
+                break;
 
-        if (current_state == Analyzer.STATE_DISCONNECTED) {
-            executor.printNetworkState(false);
-            return;
-        }
+            case Analyzer.STATE_DISCONNECTED:
+                executor.printNetworkState(false);
+                break;
 
-        if (current_state == Analyzer.STATE_UNKNOWN) {
-            executor.printInitialState();
-            return;
-        }
+            case Analyzer.STATE_WAITING_FOR_AUTH:
+                executor.requestAuthStatus();
+                break;
 
-        if (current_state == Analyzer.STATE_WAITING_FOR_AUTH) {
-            executor.requestAuthStatus();
-            return;
+            case Analyzer.STATE_AUTH_FAILED:
+                executor.printAuthenticationFailed();
+                break;
+
+            case Analyzer.STATE_AUTHENTICATED:
+                executor.requestServices();
+                break;
         }
     }
 }

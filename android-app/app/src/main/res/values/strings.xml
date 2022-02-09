@@ -1,11 +1,14 @@
 <resources>
-    <string name="app_name">Authenti6</string>
+    <string name="app_name">Seam City</string>
 
-    <string name="status_connecting">Connecting...</string>
+    <string name="status_connecting">Connecting</string>
     <string name="status_ok">Connected</string>
-    <string name="status_error">Failed</string>
+    <string name="status_error">Error</string>
 
-    <string name="status_initial">...</string>
-    <string name="status_connected">Connected, authenticating...</string>
+    <string name="status_initial">Initializing</string>
+    <string name="status_connected">Authenticating</string>
     <string name="status_disconnected">Disconnected</string>
+
+    <string name="status_auth_failed">Authentication failed</string>
+    <string name="status_requesting_services">Requesting services</string>
 </resources>

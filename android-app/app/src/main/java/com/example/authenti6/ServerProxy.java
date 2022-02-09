@@ -7,16 +7,20 @@ public final class ServerProxy {
         try {
             JSONObject obj = new JSONObject(authStatusJson);
             AuthStatus authStatus = new AuthStatus();
+            authStatus.setStatus(obj.getString("auth-status"));
 
-            authStatus
-                    .setStatus(obj.getString("auth-status"));
-                    //.setExpiryDate(obj.getString("expiration_date"));
-        } catch (Exception e) {
-            //
+            return authStatus;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return new AuthStatus();
+        return null;
     }
 
     private ServerProxy() {}
+
+    public static void sendAuthStatusRequest() {
+
+    }
 }

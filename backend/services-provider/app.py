@@ -3,19 +3,16 @@ import redis
 import netifaces as nif
 from flask import Flask, request
 from datetime import datetime, timedelta
+from python_arptable import get_arp_table
 
 app = Flask(__name__)
 
-def mac_for_ip(ip):
-    for i in nif.interfaces():
-        addrs = nif.ifaddresses(i)
-        try:
-            if_mac = addrs[nif.AF_LINK][0]['addr']
-            if_ip = addrs[nif.AF_INET][0]['addr']
-        except (IndexError, KeyError):
-            if_mac = if_ip = None
-        if if_ip == ip:
-            return if_mac
+def mac_from_ip(ip):
+    arp_table = get_arp_table()
+
+    for entry in arp_table:
+        if entry['IP address'] == ip:
+            return entry['HW address']
     return None
 
 def get_services(services_file="services.json"):
@@ -29,29 +26,25 @@ def index():
 
 @app.route('/auth-status')
 def auth_status():
-    client_ip = request.remote_addr
-    client_mac = mac_for_ip(client_ip)
+    client_mac = mac_from_ip(request.remote_addr)
     
     database = redis.Redis()
     try:
-        auth_data = json.loads(database.get(client_mac))
+        auth_status = database.get(client_mac)
     except TypeError:
-        return "{auth-status: \"ERROR\"}"
+        return str({"auth-status": "ERROR"})
 
-    return auth_data
+    return auth_status
 
 # For debug purposes only
 @app.route('/add-device')
 def add_device():
-    client_ip = request.remote_addr
-    client_mac = mac_for_ip(client_ip)
+    client_mac = mac_from_ip(request.remote_addr)
 
     database = redis.Redis()
-    expiration_time = datetime.now() + timedelta(hours=1)
     entry = {
         "auth-status": "OK",
-        "expires":  expiration_time.isoformat()
     }
 
-    database.set(client_mac, json.dumps(entry))
+    database.set(client_mac, str(entry))
     return "Device: " + client_mac + " was added with " + json.dumps(entry)

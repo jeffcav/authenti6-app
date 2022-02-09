@@ -42,44 +42,52 @@ public class Analyzer {
     }
 
     public void transition(int action) {
+        int newState;
         try {
             switch (state) {
                 case STATE_UNKNOWN:
-                    process_state_unknown(action);
+                    newState = processStateUnknown(action);
                     break;
 
                 case STATE_DISCONNECTED:
-                    process_state_disconnected(action);
+                    newState = processStateDisconnected(action);
                     break;
 
                 case STATE_CONNECTED:
-                    process_state_connected(action);
+                    newState = processStateConnected(action);
                     break;
 
                 case STATE_WAITING_FOR_AUTH:
-                    process_state_waiting_for_auth(action);
+                    newState = processStateWaitingForAuth(action);
                     break;
 
                 case STATE_AUTH_FAILED:
-                    process_state_auth_failed(action);
+                    newState = processStateAuthFailed(action);
                     break;
 
                 case STATE_AUTHENTICATED:
-                    process_state_authenticated(action);
+                    newState = processStateAuthenticated(action);
                     break;
 
                 case STATE_WAITING_FOR_SERVICES:
-                    process_state_waiting_for_services(action);
+                    newState = processStateWaitingForServices(action);
                     break;
 
                 case STATE_NO_SERVICE_AVAILABLE:
-                    process_state_no_service_available(action);
+                    newState = processStateNoServiceAvailable(action);
                     break;
 
                 case STATE_DISPLAYING_SERVICES:
-                    process_state_displaying_services(action);
+                    newState = processStateDisplayingServices(action);
                     break;
+
+                default:
+                    // Should never happen
+                    throw new WrongStateException(state, action);
             }
+
+            previous_state = state;
+            state = newState;
 
             planner.plan(previous_state, state);
 
@@ -91,69 +99,94 @@ public class Analyzer {
         }
     }
 
-    private void process_state_unknown(int action) throws WrongStateException {
+    private int processStateUnknown(int action) throws WrongStateException {
         switch (action) {
             case ACTION_CONNECT_TO_WIFI:
-                previous_state = state;
-                state = STATE_CONNECTED;
-                break;
+                return STATE_CONNECTED;
+
             case ACTION_DISCONNECT_FROM_WIFI:
-                previous_state = state;
-                state = STATE_DISCONNECTED;
-                break;
+                return STATE_DISCONNECTED;
+
             default:
                 throw new WrongStateException(state, action);
         }
     }
 
-    private void process_state_disconnected(int action) throws WrongStateException {
+    private int processStateDisconnected(int action) throws WrongStateException {
         switch (action) {
             case ACTION_DISCONNECT_FROM_WIFI:
-                previous_state = state;
-                state = STATE_DISCONNECTED;
-                break;
+                return STATE_DISCONNECTED;
+
             default:
                 throw new WrongStateException(state, action);
         }
     }
 
-    private void process_state_connected(int action) throws WrongStateException {
+    private int processStateConnected(int action) throws WrongStateException {
         switch (action) {
             case ACTION_DISCONNECT_FROM_WIFI:
-                previous_state = state;
-                state = STATE_DISCONNECTED;
-                break;
+                return STATE_DISCONNECTED;
+
             case ACTION_REQUEST_AUTH_STATUS:
-                previous_state = state;
-                state = STATE_WAITING_FOR_AUTH;
-                break;
+                return STATE_WAITING_FOR_AUTH;
+
             default:
                 throw new WrongStateException(state, action);
         }
     }
 
-    private void process_state_waiting_for_auth(int action) {
+    private int processStateWaitingForAuth(int action) throws WrongStateException {
+        switch (action) {
+            case ACTION_AUTHENTICATION_OK:
+                return STATE_AUTHENTICATED;
 
+            case ACTION_AUTHENTICATION_FAILED:
+                return STATE_AUTH_FAILED;
+
+            case ACTION_REQUEST_AUTH_STATUS:
+                return STATE_WAITING_FOR_AUTH;
+
+            default:
+                throw new WrongStateException(state, action);
+        }
     }
 
-    private void process_state_auth_failed(int action) {
+    private int processStateAuthFailed(int action) throws WrongStateException  {
+        switch (action) {
+            case STATE_AUTH_FAILED:
+                return STATE_AUTH_FAILED; // final state
 
+            default:
+                throw new WrongStateException(state, action);
+        }
     }
 
-    private void process_state_authenticated(int action) {
+    private int processStateAuthenticated(int action) throws WrongStateException {
+        switch (action) {
+            case ACTION_SERVICES_REQUESTED:
+                return STATE_WAITING_FOR_SERVICES;
 
+            case ACTION_SERVICES_OK:
+                return STATE_DISPLAYING_SERVICES;
+
+            case ACTION_SERVICES_FAIL:
+                return STATE_NO_SERVICE_AVAILABLE;
+
+            default:
+                throw new WrongStateException(state, action);
+        }
     }
 
-    private void process_state_waiting_for_services(int action) {
-
+    private int processStateWaitingForServices(int action) {
+        return 0;
     }
 
-    private void process_state_no_service_available(int action) {
-
+    private int processStateNoServiceAvailable(int action) {
+        return 0;
     }
 
-    private void process_state_displaying_services(int action) {
-
+    private int processStateDisplayingServices(int action) {
+        return 0;
     }
 
 }

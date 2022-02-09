@@ -37,12 +37,22 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(getString(R.string.status_initial));
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue = Volley.newRequestQueue(this);
         executor = new Executor(this, requestQueue, textView);
         planner = new Planner(executor);
         analyzer = new Analyzer(planner, textView);
         monitor = new Monitor(analyzer);
 
+        startMonitor(textView);
+    }
+
+    private void startMonitor(TextView textView) {
+        // monitor authentication status
+        executor.setAuthStatusListeners(
+                monitor.authStatusResponseListener,
+                monitor.authStatusErrorListener);
+
+        // monitor wifi state
         this.enableConnectedStateMonitor(textView);
         this.enableWifiMonitor();
     }

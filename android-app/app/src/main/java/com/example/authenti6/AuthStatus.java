@@ -3,9 +3,11 @@ package com.example.authenti6;
 import java.time.LocalDateTime;
 
 public class AuthStatus {
-    public static String AUTH_OK = "OK";
-    public static String AUTH_FAIL = "FAIL";
-    public static String AUTH_ERROR = "ERROR";
+    public static final String AUTH_OK = "OK";
+    public static final String AUTH_FAIL = "FAIL";
+    public static final String AUTH_IN_PROGRESS = "IN_PROGRESS";
+    public static final String AUTH_ERROR = "ERROR";
+
 
     String status;
     LocalDateTime expiryDate;
