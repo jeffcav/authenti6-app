@@ -17,7 +17,7 @@ def mac_from_ip(ip):
 
 def get_services(services_file="services.json"):
     with open(services_file, "r") as read_file:
-        return json.load(read_file)
+        return str(json.load(read_file))
 
 @app.route('/index')
 @app.route('/')

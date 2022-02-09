@@ -1,3 +1,12 @@
 {
-    "ambient-sound": "192.168.0.100:5050"
+    "services": [
+        {
+            "name":"ambient-sound",
+            "url": "192.168.0.100:5051"
+        },
+        {
+            "name":"ambient-light",
+            "url": "192.168.0.100:5052"
+        }
+    ]
 }
