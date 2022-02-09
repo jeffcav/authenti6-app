@@ -272,7 +272,7 @@ void save_measurements(struct configuration *config, char *measure, double *data
 
 int send_neighbor_solicits(struct configuration *config, unsigned char *ip6, unsigned char *mac6, unsigned char *dst, unsigned char *dstmac) {
 	double rtt;
-	int consecutive_timeouts;
+	int consecutive_timeouts = 0;
 	int loss = 0, num_rtts = 0, err = 0;
 	double rtts[config->max_samples_rtt];
 	unsigned char *pkt;
@@ -306,7 +306,7 @@ int send_neighbor_solicits(struct configuration *config, unsigned char *ip6, uns
 		rtt = my_diff_time(tstart, tend);
 
 		// Avoid very small RTT (less than 100us) caused by duplicated neighbor adv
-		if (rtt <= 0.0001) {
+		if (rtt <= 0.000001) {
 			printf("Duplicated Neighbor Advertisement. Cooling down a bit\n");
 			sleep(1); // Sleep 1s before proceeding
 			continue;
@@ -671,22 +671,16 @@ int main(int argc, char* argv[]) {
 
 		tell_auth_server("NEW_DEVICE", destination_ipv6, dstmac);
 		wait_for_request();
-		tell_auth_server("MEASURED_DEVICE", destination_ipv6, dstmac);
-
-		printf("Ready\n");
-
-		// TODO remove
-		continue;
-
+		
 		printf("Computing %d RTTs...\n", config.max_samples_rtt);
-		if (send_neighbor_solicits(&config, ip6, mac6, dst, dstmac))
-			continue;
-
-		printf("\nComputing %d IATs...\n", config.max_samples_iat);
-		if (send_mldv2_queries(&config))
-			continue;
+		if (!send_neighbor_solicits(&config, ip6, mac6, dst, dstmac)) {
+			
+			printf("\nComputing %d IATs...\n", config.max_samples_iat);
+			send_mldv2_queries(&config);
+		}		
 
 		alarm(0);
+		tell_auth_server("MEASURED_DEVICE", destination_ipv6, dstmac);
 
 		clock_gettime(CLOCK_MONOTONIC, &end);
 		printf("Duration: %lfs\n", my_diff_time(begin, end));
