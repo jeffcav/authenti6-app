@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Seam City</string>
+    <string name="app_name">Movon</string>
 
     <string name="status_connecting">Connecting</string>
     <string name="status_ok">Connected</string>
